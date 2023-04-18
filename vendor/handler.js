@@ -12,6 +12,7 @@ emitter.emit(pool[0], {
   orderId: chance.integer( {min: 10000, max: 99999} ),
   customer: chance.name(),
   address: chance.address(),
+  test: 'test',
 });
 
 //listening for delivered event
