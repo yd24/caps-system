@@ -1,15 +1,10 @@
 'use strict';
 
-const Events = require('events');
-const eventEmitter = new Events();
-
 const eventPool = [
   'pickup',
   'in-transit',
   'delivered',
+  'join-room',
 ];
 
-module.exports = {
-  emitter: eventEmitter,
-  pool: eventPool,
-};
+module.exports = eventPool;
