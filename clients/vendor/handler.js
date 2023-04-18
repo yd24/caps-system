@@ -2,7 +2,7 @@
 
 const Chance = require('chance');
 const chance = new Chance();
-const eventPool = require('../eventPool');
+const eventPool = require('../../eventPool');
 const io = require('socket.io-client');
 const SERVER_URL = process.env.SERVER_URL || 'http://localhost:3001/caps';
 

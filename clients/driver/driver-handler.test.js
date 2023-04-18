@@ -1,7 +1,7 @@
 'use strict';
 
 const handleDriver = require('./handler');
-const { emitter, pool } = require('../eventPool');
+const { emitter, pool } = require('../../eventPool');
 
 describe('Testing driver events', () => {
   test('Testing that driver is listening for pickup event', () => {

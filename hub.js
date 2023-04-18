@@ -25,5 +25,5 @@ pool.forEach(event => {
   emitter.on(event, eventLog(event));
 });
 
-require('./driver');
-require('./vendor');
+require('./clients/driver');
+require('./clients/vendor');

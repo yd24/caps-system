@@ -1,7 +1,7 @@
 'use strict';
 
 const vendor = require('./handler');
-const { emitter, pool } = require('../eventPool');
+const { emitter, pool } = require('../../eventPool');
 const Chance = require('chance');
 const chance = new Chance();
 
