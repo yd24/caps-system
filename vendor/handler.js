@@ -2,19 +2,20 @@
 
 const Chance = require('chance');
 const chance = new Chance();
-const { emitter, pool } = require('../eventPool');
+const { eventPool } = require('../server');
+const io = require('socket.io-client');
+const SERVER_URL = process.env.SERVER_URL || 'http://localhost:3001/caps';
 
 const store_name = chance.company();
+let vendorSocket = io(SERVER_URL);
 
-//trigger pickup event
-emitter.emit(pool[0], {
+vendorSocket.emit(eventPool[0], {
   store: store_name,
   orderId: chance.integer( {min: 10000, max: 99999} ),
   customer: chance.name(),
   address: chance.address(),
 });
 
-//listening for delivered event
-emitter.on(pool[2], (payload) => {
+vendorSocket.on(eventPool[2], (payload) => {
   console.log(`Thank you for your order, ${payload.customer}`);
 });
