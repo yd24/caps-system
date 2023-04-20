@@ -1,24 +1,21 @@
 'use strict';
-const { generatePayload, handleOrder, handleDeliveryMessage, handlePickupMessage } = require('./handler');
-const io = require('socket.io-client');
+const { generatePayload, handleDeliveryMessage, handlePickupMessage } = require('./handler');
 const eventPool = require('../../eventPool');
-const SERVER_URL = process.env.SERVER_URL || 'http://localhost:3001/caps';
+const { subscribe, trigger } = require('../socket');
 
-//Making a socket instance and sending it over to the main server
-let vendorSocket = io(SERVER_URL);
+const payload = generatePayload();
 
-const vendors = () => {
-  const payload = generatePayload();
+//emit join room
+trigger(eventPool[3], payload);
+//emit pickup
+trigger(eventPool[0], payload);
 
-  //start listeners for in-transit/delivered
-  vendorSocket.on(eventPool[1], (payload) => {
-    handlePickupMessage(payload);
-  });
-  vendorSocket.on(eventPool[2], (payload) => {
-    handleDeliveryMessage(payload);
-  });
-  
-  handleOrder(vendorSocket, payload);
-};
+//listen for in-transit
+subscribe(eventPool[1], (payload) => {
+  handlePickupMessage(payload);
+});
 
-vendors();
+//listen for delivered
+subscribe(eventPool[2], (payload) => {
+  handleDeliveryMessage(payload);
+});

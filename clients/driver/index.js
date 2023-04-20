@@ -1,12 +1,23 @@
 'use strict';
-const startListeners = require('./handler');
-const io = require('socket.io-client');
-const SERVER_URL = process.env.SERVER_URL || 'http://localhost:3001/caps';
 
-const driverSocket = io(SERVER_URL);
+const { trigger, subscribe } = require('../socket');
+const { handlePickup, handleDelivery } = require('./handler');
+const eventPool = require('../../eventPool');
 
-const driver = () => {
-  startListeners(driverSocket);
-};
+//listening for pickup event
+subscribe(eventPool[0], (payload) => {
+  //join room
+  trigger(eventPool[3], payload);
 
-driver();
+  //in-transit
+  setTimeout(() => {
+    trigger(eventPool[1], payload);
+    handlePickup(payload);
+  }, 2000);
+
+  //delivered
+  setTimeout(() => {
+    trigger(eventPool[2], payload);
+    handleDelivery(payload);
+  }, 5000);
+});

@@ -1,6 +1,7 @@
 'use strict';
 
-const { generatePayload, handleOrder, handleDeliveryMessage, handlePickupMessage } = require('./handler');
+const { generatePayload, handleDeliveryMessage, handlePickupMessage } = require('./handler');
+const { trigger } = require('../socket');
 
 describe('Testing vendor events', () => {
   test('Testing that vendor is generating payload', () => {
@@ -17,8 +18,7 @@ describe('Testing vendor events', () => {
     const socket = {
       emit: jest.fn(),
     };
-
-    handleOrder(socket, payload);
+    
     expect(socket.emit).toHaveBeenCalledWith('join-room', payload);
     expect(socket.emit).toHaveBeenCalledWith('pickup', payload);
   });

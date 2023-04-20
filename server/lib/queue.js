@@ -1,6 +1,6 @@
 'use strict';
 
-class EventQueue {
+class MessageQueue {
   constructor() {
     this.data = {};
   }
@@ -21,4 +21,4 @@ class EventQueue {
   }
 }
 
-module.exports = EventQueue;
+module.exports = MessageQueue;
