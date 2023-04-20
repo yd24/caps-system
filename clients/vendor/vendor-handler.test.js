@@ -1,23 +1,36 @@
 'use strict';
 
-const vendor = require('./handler');
-const { emitter, pool } = require('../../eventPool');
-const Chance = require('chance');
-const chance = new Chance();
+const { generatePayload, handleOrder, handleDeliveryMessage, handlePickupMessage } = require('./handler');
 
 describe('Testing vendor events', () => {
-  const store_name = chance.company();
-  test('Testing that vendor is emitting pickup event', () => {
-    let spyEmitter = jest.spyOn(emitter, 'emit');
-    vendor(store_name);
-    expect(spyEmitter).toHaveBeenCalled();
+  test('Testing that vendor is generating payload', () => {
+    let payload = generatePayload();
 
+    expect(payload.store).toBeTruthy();
+    expect(payload.orderId).toBeTruthy();
+    expect(payload.customer).toBeTruthy();
+    expect(payload.address).toBeTruthy();
   });
 
-  test('Testing that vendor is listening for delivered event', () => {
-    let spyEmitter = jest.spyOn(emitter, 'emit');
-    let spyConsole = jest.spyOn(console, 'log');
-    vendor(store_name);
-    expect(spyEmitter).toHaveBeenCalled();
+  test('Testing that vendor is able to emit pickup event', () => {
+    let payload = generatePayload();
+    const socket = {
+      emit: jest.fn(),
+    };
+
+    handleOrder(socket, payload);
+    expect(socket.emit).toHaveBeenCalledWith('join-room', payload);
+    expect(socket.emit).toHaveBeenCalledWith('pickup', payload);
+  });
+
+  test('Testing that vendor is able to listen for events', () => {
+    let payload = generatePayload();
+    console.log = jest.fn();
+
+    handlePickupMessage(payload);
+    expect(console.log).toHaveBeenCalledWith(`DRIVER: picked up ${payload.orderId}, ${payload.customer}`);
+
+    handleDeliveryMessage(payload);
+    expect(console.log).toHaveBeenCalledWith(`Thank you for your order, ${payload.customer}`);
   });
 });
