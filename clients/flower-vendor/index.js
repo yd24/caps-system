@@ -5,6 +5,9 @@ const { subscribe, trigger } = require('../socket');
 
 const payload = generatePayload();
 
+//emit get all delivered
+trigger(eventPool[5], payload);
+
 //emit join room
 trigger(eventPool[3], payload);
 //emit pickup

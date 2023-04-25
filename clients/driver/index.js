@@ -4,6 +4,8 @@ const { trigger, subscribe } = require('../socket');
 const { handlePickup, handleDelivery } = require('./handler');
 const eventPool = require('../../eventPool');
 
+trigger(eventPool[4], {store: 'Flowers Are US'});
+
 //listening for pickup event
 subscribe(eventPool[0], (payload) => {
   //join room

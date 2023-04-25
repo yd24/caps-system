@@ -7,12 +7,16 @@ Code Academy Parcel Service - an application that will emulate a real world supp
   * In this lab, we implement basic event listeners and emitters for a simulated order and delivery.
 * Lab 12 - Socket.io
   * In this lab, we refactor our previous code with Socket.io.
+* Lab 13 - MessageQueues
+  * In this lab, we implement MessageQueues to guarantee delivery.
 
 Deploy Link: https://caps-3dm8.onrender.com
 
 PR: https://github.com/yd24/caps-system/pull/1
 
 PR2: https://github.com/yd24/caps-system/pull/4
+
+PR3: https://github.com/yd24/caps-system/pull/5
 
 Github Actions: https://github.com/yd24/caps-system/actions
 
@@ -25,4 +29,6 @@ Successful run:
 
 [UML](./UML.png)
 
-[UML](./UML2.png)
+[UML2](./UML2.png)
+
+[UML3](./UML3.png)

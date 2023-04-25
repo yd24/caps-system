@@ -39,14 +39,12 @@ caps.on('connection', (socket) => {
   //only DriverServerSocket emits this
   //delivered
   socket.on(eventPool[2], (payload) => {
-    // console.log('PICKUP QUEUE BEFORE REMOVE', util.inspect(pickupQueue, false, null));
-    // console.log('DELIVERY QUEUE BEFORE ADD', util.inspect(deliveredQueue, false, null));
     let orders = pickupQueue.read(payload.store);
-    let order = orders.remove(payload.orderId);
-
-    setDelivered(payload, order);
-
-    socket.broadcast.to(payload.store).emit(eventPool[2], payload);
+    if (orders) {
+      let order = orders.remove(payload.orderId);
+      setDelivered(payload, order);
+      socket.broadcast.to(payload.store).emit(eventPool[2], payload);
+    }
   });
 
   //DriverServerSocket is listening for catch-pickup from drivers
@@ -54,8 +52,8 @@ caps.on('connection', (socket) => {
     let orders = pickupQueue.read(payload.store);
     if (orders) {
       orders = pickupQueue.remove(payload.store);
-      for (const id in orders) {
-        let order = orders[id];
+      for (const id in orders.data) {
+        let order = orders.data[id];
         socket.emit(eventPool[0], order);
         setDelivered(payload, order);
       }
@@ -66,9 +64,9 @@ caps.on('connection', (socket) => {
   socket.on(eventPool[5], (payload) => {
     let deliveredOrders = deliveredQueue.read(payload.store);
     if (deliveredOrders) {
-      let orders = deliveredOrders.remove(payload.store);
-      for (const id in orders) {
-        let order = orders[id];
+      let orders = deliveredQueue.remove(payload.store);
+      for (const id in orders.data) {
+        let order = orders.data[id];
         socket.emit(eventPool[2], order);
       }
     }
