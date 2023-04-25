@@ -1,6 +1,6 @@
 'use strict';
 
-const { generatePayload, handleOrder, handleDeliveryMessage, handlePickupMessage } = require('./handler');
+const { generatePayload, handleDeliveryMessage, handlePickupMessage } = require('./handler');
 
 describe('Testing vendor events', () => {
   test('Testing that vendor is generating payload', () => {
@@ -10,17 +10,6 @@ describe('Testing vendor events', () => {
     expect(payload.orderId).toBeTruthy();
     expect(payload.customer).toBeTruthy();
     expect(payload.address).toBeTruthy();
-  });
-
-  test('Testing that vendor is able to emit pickup event', () => {
-    let payload = generatePayload();
-    const socket = {
-      emit: jest.fn(),
-    };
-
-    handleOrder(socket, payload);
-    expect(socket.emit).toHaveBeenCalledWith('join-room', payload);
-    expect(socket.emit).toHaveBeenCalledWith('pickup', payload);
   });
 
   test('Testing that vendor is able to listen for events', () => {

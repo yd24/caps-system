@@ -2,20 +2,14 @@
 
 const Chance = require('chance');
 const chance = new Chance();
-const eventPool = require('../../eventPool');
 
 function generatePayload() {
   return {
-    store: chance.company(),
+    store: 'Flowers Are US',
     orderId: chance.integer( {min: 10000, max: 99999} ),
     customer: chance.name(),
     address: chance.address(),
   };
-}
-
-function handleOrder(vendorSocket, payload) {
-  vendorSocket.emit(eventPool[3], payload);
-  vendorSocket.emit(eventPool[0], payload);
 }
 
 function handleDeliveryMessage(payload) {
@@ -28,7 +22,6 @@ function handlePickupMessage(payload) {
 
 module.exports = {
   generatePayload,
-  handleOrder,
   handleDeliveryMessage,
   handlePickupMessage,
 };

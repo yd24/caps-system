@@ -5,6 +5,8 @@ const eventPool = [
   'in-transit',
   'delivered',
   'join-room',
+  'catchup-pickup',
+  'catchup-delivery',
 ];
 
 module.exports = eventPool;
